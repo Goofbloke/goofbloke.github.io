@@ -155,7 +155,7 @@
             let message = document.getElementById("messageText");
 
             if (answer === "yes") {
-                message.innerText = "🎉 Yay! Fireworks for you! 🎆";
+                message.innerText = "Yay! I LOVE YOU!!";
                 triggerFireworks();
             } else {
                 message.innerText = "Oh no! 😢 Maybe next time! 💌";
