@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Envelope</title>
+    <title>Envelope with Fireworks</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #f4f4f4;
+            background: #222;
             flex-direction: column;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+            color: white;
         }
 
         .envelope-container {
@@ -59,11 +63,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
             font-size: 14px;
             text-align: center;
             padding: 10px;
             transition: top 0.5s ease-in-out;
+            color: black;
         }
 
         .buttons {
@@ -78,6 +82,7 @@
             cursor: pointer;
             border: none;
             border-radius: 5px;
+            transition: transform 0.2s ease-in-out;
         }
 
         .yes-btn {
@@ -90,6 +95,10 @@
             color: white;
         }
 
+        .yes-btn:hover, .no-btn:hover {
+            transform: scale(1.1);
+        }
+
         .opened .flap {
             transform: rotateX(180deg);
         }
@@ -97,18 +106,41 @@
         .opened .note {
             top: 20%;
         }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, yellow, red, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <h1>💌 Open the Envelope! 💌</h1>
     <div class="envelope-container" onclick="openEnvelope()">
         <div class="envelope">
             <div class="flap"></div>
             <div class="note">
-                <p id="messageText">HELLO MISS ZINNIA CHANDA, WILL YOU BE MY VALENTINE??</p>
+                <p id="messageText">ZINNIA CHANDA WILL YOU BE MY VALENTINE?</p>
                 <div class="buttons">
-                    <button class="yes-btn" onclick="handleResponse('yes')">Yes</button>
-                    <button class="no-btn" onclick="handleResponse('no')">No</button>
+                    <button class="yes-btn" onclick="handleResponse('yes'); event.stopPropagation();">Yes</button>
+                    <button class="no-btn" onclick="handleResponse('no'); event.stopPropagation();">No</button>
                 </div>
             </div>
         </div>
@@ -121,10 +153,31 @@
 
         function handleResponse(answer) {
             let message = document.getElementById("messageText");
+
             if (answer === "yes") {
-                message.innerText = "Yay! 🎉 I love you so much! 🤗";
+                message.innerText = "🎉 Yay! Fireworks for you! 🎆";
+                triggerFireworks();
             } else {
                 message.innerText = "Oh no! 😢 Maybe next time! 💌";
+            }
+        }
+
+        function triggerFireworks() {
+            for (let i = 0; i < 20; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("firework");
+
+                let x = Math.random() * window.innerWidth;
+                let y = Math.random() * window.innerHeight * 0.7; // Appear mostly at the top
+
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+
+                document.body.appendChild(firework);
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
             }
         }
     </script>
